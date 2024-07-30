@@ -56,14 +56,22 @@ In `./zsh/pwm` zsh scripts for controlling hardware PWM on a Raspberry Pi 5 B us
 The script uses some tools and commands that come with Raspberry Pi OS or ZSH::
 - `printf`, `echo`, `zparseopts`, `trap`, `shift`, `sleep`, `pinctrl`, `source`, `bc`
 
-#### Example Script
+### Example
 The example script for a servo motor control is located at:
 - `./zsh/pwm/run.zsh`
 
 This script uses functions defined in:
 - `pwm.zsh` in the same directory.
 
-### Running the Script
+Demo: https://youtu.be/KVOtXnceXw4
+
+<div align="left">
+      <a href="https://youtu.be/KVOtXnceXw4">
+         <img src="https://img.youtube.com/vi/KVOtXnceXw4/0.jpg" style="width:400px;">
+      </a>
+</div>
+
+#### Running the Script
 
 Clone repository:
 ```bash
@@ -95,7 +103,7 @@ sudo .zsh/pwm/run.zsh &
 
 Use the `CTRL-C` or `./zsh/pwm/stop.zsh` for stopping.
 
-#### Check
+### Check
 
 To verify that the function is correctly set.
 
