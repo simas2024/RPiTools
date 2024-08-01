@@ -12,7 +12,7 @@ source ${MYDIR}/pwm.zsh
 # DC = PW * Frequence / 10000
 # ----------------------------------
 #             minv |   midv |   maxv
-# Percent:    4.5% |   7.5% |  10.5%
+# Percent:    4.5% |   8.0% |  11.5%
 
 # Raspberry 5:
 # 
@@ -64,18 +64,47 @@ source ${MYDIR}/pwm.zsh
 # 18: a3    pd | lo // GPIO18 = PWM0_CHAN2
 # 19: a3    pd | lo // GPIO19 = PWM0_CHAN3
 
+echo $$ > ${MYDIR}/run_zsh_pid
 
-sleeptime=0.5
+stopit() {
+  pwm stop -name red
+  pwm stop -name yellow
+  pwm stop -name green
+  pwm dc -name servo -value $midv -sleep $sleeptime
+  pwm stop -name servo
+}
+
+trap 'echo "Stopping..."; stopit; rm ${MYDIR}/run_zsh_pid; exit 0' SIGUSR1
+trap 'echo "Stopping..."; stopit; rm ${MYDIR}/run_zsh_pid; exit 0' SIGINT
+
+echo $$ > ${MYDIR}/run_zsh_pid
+
+sleeptime=0.2
 minv=4.5
-maxv=10.5
+maxv=11.5
 midv=$(echo "scale=1; ($maxv + $minv) / 2.0" | bc -l)
-channel=1
-pwm init -chip 2 -channel $channel -freq 50
-pwm start -chip 2 -channel $channel -value $midv
+servo=1
+green=3
+yellow=0
+red=2
+# "name_1 chip_1 channel_1 frequency_1" ... "name_n chip_n channel_n frequency_n"
+pwm init "red 2 2 100" "yellow 2 0 100" "green 2 3 100" "servo 2 1 50"
+pwm start -name red -value 0
+pwm start -name yellow -value 0
+pwm start -name green -value 0
+pwm start -name servo -value $midv
+
 while true; do
-  pwm dc -chip 2 -channel $channel -value $minv -sleep $sleeptime
-  pwm dc -chip 2 -channel $channel -value $midv -sleep $sleeptime
-  pwm dc -chip 2 -channel $channel -value $maxv -sleep $sleeptime
-  pwm dc -chip 2 -channel $channel -value $midv -sleep $sleeptime
+  pwm dc -name red -value 80
+  pwm dc -name servo -value $maxv -sleep $sleeptime
+  pwm dc -name yellow -value 80
+  pwm dc -name servo -value $midv -sleep $sleeptime
+  pwm dc -name yellow -value 0
+  pwm dc -name red -value 0
+  pwm dc -name green -value 80
+  pwm dc -name servo -value $minv -sleep $sleeptime
+  pwm dc -name green -value 0
+  pwm dc -name yellow -value 80
+  pwm dc -name servo -value $midv -sleep $sleeptime
+  pwm dc -name yellow -value 0
 done
-pwm stop -chip 2 -channel $channel

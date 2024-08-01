@@ -7,3 +7,9 @@
 	•	ZSH script for hardware PWM control via sysfs interface on Raspberry Pi 5
 	•	Set and output HW PWM on pins 12, 13, 18
 	•	Example for servo control in run.zsh
+
+## 0.2.0 - 2024-08-01
+
+### Changed
+	•	Script Update: Revised the script to enable the use of all four PWM channels.
+	•	Demo Update: The demo has been updated to showcase the control of an RC servo and LED using the improved script capabilities.
