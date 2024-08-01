@@ -7,8 +7,8 @@
 In `./zsh/pwm` zsh scripts for controlling hardware PWM on a Raspberry Pi 5 B using the `sysfs` interface.
 
 ### Features
-- **ZSH Script for Hardware PWM**: Control PWM on Raspberry Pi 5 pins 12, 13, and 18.
-- **Servo Control Example**: Included example in `zsh/pwm/run.zsh` for controlling a servo motor.
+- **ZSH Script for Hardware PWM**: Control PWM on Raspberry Pi 5 pins 12, 13, 18 and 19.
+- **Demo Script**: Included is an example in zsh/pwm/run.zsh for controlling an RC servo and LEDs.
 
 ### Platform (tested)
 - Raspberry Pi 5 Model B
@@ -57,17 +57,17 @@ The script uses some tools and commands that come with Raspberry Pi OS or ZSH::
 - `printf`, `echo`, `zparseopts`, `trap`, `shift`, `sleep`, `pinctrl`, `source`, `bc`
 
 ### Example
-The example script for a servo motor control is located at:
+The example script for a RC servo and LEDs control is located at:
 - `./zsh/pwm/run.zsh`
 
 This script uses functions defined in:
 - `pwm.zsh` in the same directory.
 
-Demo: https://youtu.be/KVOtXnceXw4
+Demo: https://youtu.be/Z8dT_J9DFvU
 
 <div align="left">
-      <a href="https://youtu.be/KVOtXnceXw4">
-         <img src="https://img.youtube.com/vi/KVOtXnceXw4/0.jpg" style="width:400px;">
+      <a href="https://youtu.be/Z8dT_J9DFvU">
+         <img src="https://img.youtube.com/vi/Z8dT_J9DFvU/0.jpg" style="width:500px;">
       </a>
 </div>
 
@@ -82,16 +82,7 @@ Navigate to the directory where the repository was cloned:
 ```bash
 cd RPiTools
 ```
-
-Set the parameters correctly and connect the servo motor to the configured PIN:
-
-```bash
-sleeptime=0.5
-minv=4.5
-maxv=10.5
-channel=1
-```
- Start the script:
+Start the script:
 
 ```bash
 sudo .zsh/pwm/run.zsh
