@@ -58,22 +58,6 @@ function _init {
   done
 }
 
-function mytuple {
-  for tuples in "$@"; do
-    IFS=' ' set -- $tuples
-    local tuple=$1
-    local tupleA=("${(@s/ /)tuple}")
-    local name=$tupleA[1]
-    local chip=$tupleA[2]
-    local channel=$tupleA[3]
-    local frequency=$tupleA[4]
-    print "$chip $channel $frequency $pwm_dir/pwmchip$chip $pwm_dir/pwmchip$chip/pwm$channel"
-    pwm_data[$name]="$chip $channel $frequency $pwm_dir/pwmchip$chip $pwm_dir/pwmchip$chip/pwm$channel"
-    local pin_func=("${(@s/ /)channel_pin_func[$channel]}")
-    print "$pin_func[1] $pin_func[2]"
-  done
-}
-
 function _get {                    
   local name=$1
   local key=$2  
@@ -132,7 +116,7 @@ function _change_frequency {
   echo $(printf "%.0f" $period) > "${pwn_period_path}"
 }
 
-# $1 : cmd (init, dc, start, stop) $2 : 'args'
+# $1 : cmd (init, dc, start, stop) $2 : other arguments
 function pwm { 
   local cmd=$1
   shift
