@@ -1,45 +1,56 @@
 # RPiTools
 
-- Raspberry Pi 5 HW PWM Control
+A growing repository and a small collection of tools and scripts for the Raspberry Pi 5. It includes utilities for managing, and utilizing the GPIO (General Purpose Input/Output) pins.
 
-## Raspberry Pi 5 HW PWM Control
+- [Raspberry Pi 5 HW PWM Control](#raspberry-pi-5-hw-pwm-control)
 
-In `./zsh/pwm` zsh scripts for controlling hardware PWM on a Raspberry Pi 5 B using the `sysfs` interface.
+## Platform
 
-### Features
-- **ZSH Script for Hardware PWM**: Control PWM on Raspberry Pi 5 pins 12, 13, 18 and 19.
-- **Demo Script**: Included is an example in zsh/pwm/run.zsh for controlling an RC servo and LEDs.
+      
+             _,met$$$$$gg.           user@rspb01
+          ,g$$$$$$$$$$$$$$$P.        -----------
+        ,g$$P"         """Y$$.".     OS: Debian GNU/Linux bookworm 12.6 aarch64
+       ,$$P'               `$$$.     Host: Raspberry Pi 5 Model B Rev 1.0
+      ',$$P       ,ggs.     `$$b:    Kernel: Linux 6.6.40-v8-16k+
+      `d$$'     ,$P"'   .    $$$     Uptime: 13 mins
+       $$P      d$'     ,    $$$P    Packages: 1624 (dpkg), 1 (snap)
+       $$:      $.   -    ,d$$'      Shell: bash 5.2.15
+       $$;      Y$b._   _,d$P'       WM: Wayfire (X11)
+       Y$$.    `.`"Y$$$$P"'          Cursor: Adwaita
+       `$$b      "-.__               Terminal: /dev/pts/0
+        `Y$$                         CPU: Cortex-A76 (4) @ 2.40 GHz
+         `Y$$.                       Memory: 662.25 MiB / 7.86 GiB (8%)
+           `$$b.                     Swap: 0 B / 199.98 MiB (0%)
+             `Y$$b.                  Disk (/): 8.45 GiB / 915.32 GiB (1%) - ext4
+                `"Y$b._              Local IP (eth0): 192.168.2.125/24
+                   `"""              Locale: en_GB.UTF-8
+      
+## RPi and GPIO
 
-### Platform (tested)
-- Raspberry Pi 5 Model B
-- Linux 6.6.40-v8-16k+
-- Raspberry Pi OS
-
-
-                                                             +-----+--------+----------+--------+-----+
-                                                             |     |  Name  | Physical |  Name  |     |
-      ~ ---------------------------------                    +-----+--------+----++----+--------+-----+
-      ~                              o  o ------------------ |     |   3.3v |  1 || 2  |     5v |     |
-      ~                              o  o                    |   2 |  SDA.1 |  3 || 4  |     5V |     |
-      ~                              o  o                    |   3 |  SCL.1 |  5 || 6  |     0v |     |
-      ~                              o  o                    |   4 |   GPIO |  7 || 8  |  TxD.1 |  14 |
-      ~                              o  o                    |     |     0v |  9 || 10 |  RxD.1 |  15 |
-      ~                              o  o < Channel 2        |  17 |   GPIO | 11 || 12 |   GPIO |  18 |
-      ~                              o  o                    |  27 |   GPIO | 13 || 14 |     0v |     |
-      ~                              o  o                    |  22 |   GPIO | 15 || 16 |   GPIO |  23 |
-      ~          -------------       o  o                    |     |   3.3v | 17 || 18 |   GPIO |  24 |
-      ~         |             |      o  o                    |  10 |   MOSI | 19 || 20 |     0v |     |
-      ~         |   BCM2712   |      o  o                    |   9 |   MISO | 21 || 22 |   GPIO |  25 |
-      ~         |             |      o  o                    |  11 |   SCLK | 23 || 24 |    CE0 |   8 |
-      ~          -------------       o  o                    |     |     0v | 25 || 26 |    CE1 |   7 |
-      ~                              o  o                    |   0 |  SDA.0 | 27 || 28 |  SCL.0 |   1 |
-      ~                              o  o                    |   5 |   GPIO | 29 || 30 |     0v |     |
-      ~                              o  o < Channel 0        |   6 |   GPIO | 31 || 32 |   GPIO |  12 |
-      ~                  Channel 1 > o  o                    |  13 |   GPIO | 33 || 34 |     0v |     |
-      ~                  Channel 3 > o  o                    |  19 |   GPIO | 35 || 36 |   GPIO |  16 |
-      ~                              o  o                    |  26 |   GPIO | 37 || 38 |   GPIO |  20 |
-      ~                              o  o ------------------ |     |     0v | 39 || 40 |   GPIO |  21 |
-      ~                   -------        |                   +-----+--------+----------+--------+-----+
+                                                   +-----+--------+----------+--------+-----+
+                                                   |     |  Name  | Physical |  Name  |     |
+      ~ ---------------------------------          +-----+--------+----++----+--------+-----+
+      ~                              o  o -------- |     |   3.3v |  1 || 2  |     5v |     |
+      ~                              o  o          |   2 |  SDA.1 |  3 || 4  |     5V |     |
+      ~                              o  o          |   3 |  SCL.1 |  5 || 6  |     0v |     |
+      ~                              o  o          |   4 |   GPIO |  7 || 8  |  TxD.1 |  14 |
+      ~                              o  o          |     |     0v |  9 || 10 |  RxD.1 |  15 |
+      ~                              o  o          |  17 |   GPIO | 11 || 12 |   GPIO |  18 |
+      ~                              o  o          |  27 |   GPIO | 13 || 14 |     0v |     |
+      ~                              o  o          |  22 |   GPIO | 15 || 16 |   GPIO |  23 |
+      ~          -------------       o  o          |     |   3.3v | 17 || 18 |   GPIO |  24 |
+      ~         |             |      o  o          |  10 |   MOSI | 19 || 20 |     0v |     |
+      ~         |   BCM2712   |      o  o          |   9 |   MISO | 21 || 22 |   GPIO |  25 |
+      ~         |             |      o  o          |  11 |   SCLK | 23 || 24 |    CE0 |   8 |
+      ~          -------------       o  o          |     |     0v | 25 || 26 |    CE1 |   7 |
+      ~                              o  o          |   0 |  SDA.0 | 27 || 28 |  SCL.0 |   1 |
+      ~                              o  o          |   5 |   GPIO | 29 || 30 |     0v |     |
+      ~                              o  o          |   6 |   GPIO | 31 || 32 |   GPIO |  12 |
+      ~                              o  o          |  13 |   GPIO | 33 || 34 |     0v |     |
+      ~                              o  o          |  19 |   GPIO | 35 || 36 |   GPIO |  16 |
+      ~                              o  o          |  26 |   GPIO | 37 || 38 |   GPIO |  20 |
+      ~                              o  o -------- |     |     0v | 39 || 40 |   GPIO |  21 |
+      ~                   -------        |         +-----+--------+----------+--------+-----+
       ~                  |       |       |
       ~                  |  RP1  |       |
       ~                  |       |       |
@@ -49,11 +60,24 @@ In `./zsh/pwm` zsh scripts for controlling hardware PWM on a Raspberry Pi 5 B us
       ~    |     |    |     |    |     | |
       ~ ---       ----       ---      ----
 
+
+## Raspberry Pi 5 HW PWM Control
+
+A ZSH library and scripts for controlling hardware PWM on a Raspberry Pi 5 B using the `sysfs` interface.
+
+- `./zsh/pwm/pwm.zsh` A ZSH library for controlling hardware PWM (Pulse Width Modulation) on a Raspberry Pi 5 B using the sysfs interface.
+- `./zsh/pwm/run.zsh` A demo script that shows how to use the PWM ZSH library. It demonstrates the basic functions and use cases of PWM control.
+- `./zsh/pwm/stop.zsh` A small script that can be used to stop a running `run.zsh` script in the background `./zsh/pwm/run.zsh &`.
+
+### Features
+- **ZSH Script for Hardware PWM**: Control PWM on Raspberry Pi 5 pins 12, 13, 18 and 19.
+- **Demo Script**: Included is an example in zsh/pwm/run.zsh for controlling an RC servo and LEDs.
+
 ### Requirements
 - `zsh` v5.9
-- Add `dtoverlay=pwm-2chan` to `/boot/firmware/config.txt`
+- Add `dtoverlay=pwm-2chan` to `/boot/firmware/config.txt`. So we can use GPIO 12, 13, 18 and 19 for PWM function. See [Overlay](#datasheet)
 
-The script uses some tools and commands that come with Raspberry Pi OS or ZSH::
+The library and script use some tools and builtin commands that come with Raspberry Pi OS and ZSH:
 - `printf`, `echo`, `zparseopts`, `trap`, `shift`, `sleep`, `pinctrl`, `source`, `bc`
 
 ### Example
@@ -85,11 +109,11 @@ cd RPiTools
 Start the script:
 
 ```bash
-sudo .zsh/pwm/run.zsh
+sudo ./zsh/pwm/run.zsh
 ```
 or
 ```bash
-sudo .zsh/pwm/run.zsh &
+sudo ./zsh/pwm/run.zsh &
 ```
 
 Use the `CTRL-C` or `./zsh/pwm/stop.zsh` for stopping.
@@ -109,10 +133,19 @@ pinctrl get 12,13,18,19
 
 ## References
 
+### Datasheet
+
+https://github.com/raspberrypi/rpi-firmware/tree/master/overlays#readme
+
+https://datasheets.raspberrypi.com/rp1/rp1-peripherals.pdf
+
+### Forum
+
 https://forums.raspberrypi.com/viewtopic.php?t=366795
+
+### Examples
 
 https://github.com/Pioreactor/rpi_hardware_pwm
 
 https://gist.github.com/Gadgetoid/b92ad3db06ff8c264eef2abf0e09d569
 
-https://datasheets.raspberrypi.com/rp1/rp1-peripherals.pdf
