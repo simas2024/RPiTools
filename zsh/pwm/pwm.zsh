@@ -2,6 +2,8 @@
 
 typeset pwm_dir="/sys/class/pwm"
 
+typeset pinctrl_path="/usr/bin/pinctrl"
+
 declare -A pwm_data
 
 declare -A pwm_data_key_index=(
@@ -20,6 +22,15 @@ declare -A channel_pin_func=(
    ["1"]='13 a0'
    ["2"]='18 a3'
    ["3"]='19 a3')
+
+function _detect_os() {
+    if [[ -f /etc/os-release ]]; then
+        . /etc/os-release
+        OS=$ID
+    else
+        OS=$(uname -s)
+    fi
+}
 
 # args:  $1 : name $2 : value
 function _start {
@@ -49,8 +60,15 @@ function _init {
     pwm_data[$name]="$chip $channel $frequency $pwm_chip_dir $pwm_channel_dir $pwm_export_path $pwm_enable_path $pwn_period_path $pwn_dutycycle_path"
     # System checks
     [[ -d $pwm_chip_dir ]] || { echo "Need to add 'dtoverlay=pwm-2chan' to /boot/config.txt or /boot/firmware/config.txt and reboot"; return 1; }
-    local pin_func=("${(@s/ /)channel_pin_func[$channel]}") 
-    pinctrl set $pin_func[1] $pin_func[2]
+    local pin_func=("${(@s/ /)channel_pin_func[$channel]}")
+
+    if [[ -x "$pinctrl_path" ]]; then
+      "$pinctrl_path" set $pin_func[1] $pin_func[2]
+    else
+      echo "pinctrl not found or not executable at $pinctrl_path"
+      return 1
+    fi
+  
     [[ -w "$pwm_export_path" ]] || { echo "Need write access to files in '${pwm_chip_dir}'"; return 1; }
     [[ -d $pwm_channel_dir ]] || { echo $channel > "$pwm_export_path" }
     # Set frequency
@@ -167,3 +185,18 @@ function pwm {
       ;;
   esac
 }
+
+_detect_os
+
+case "$OS" in
+    raspbian|debian|ubuntu)
+        pinctrl_path="/usr/bin/pinctrl"
+        ;;
+    almalinux|centos|rhel|fedora)
+        pinctrl_path="/usr/local/bin/pinctrl"
+        ;;
+    *)
+        echo "Unsupported OS: $OS"
+        exit 1
+        ;;
+esac

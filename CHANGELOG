@@ -13,3 +13,8 @@
 ### Changed
 	•	Script Update: Revised the script to enable the use of all four PWM channels.
 	•	Demo Update: The demo has been updated to showcase the control of an RC servo and LED using the improved script capabilities.
+
+## 0.3.0 - 2024-08-04
+
+### Added
+	•	README and Script Update: Support for AlmaLinux
