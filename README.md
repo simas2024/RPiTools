@@ -6,7 +6,9 @@ A growing repository and a small collection of tools and scripts for the Raspber
 
 ## Platform
 
-      
+The script was tested and runs on Raspberry Pi OS and AlmaLinux.
+
+### Raspberry Pi OS
              _,met$$$$$gg.           user@rspb01
           ,g$$$$$$$$$$$$$$$P.        -----------
         ,g$$P"         """Y$$.".     OS: Debian GNU/Linux bookworm 12.6 aarch64
@@ -24,6 +26,30 @@ A growing repository and a small collection of tools and scripts for the Raspber
              `Y$$b.                  Disk (/): 8.45 GiB / 915.32 GiB (1%) - ext4
                 `"Y$b._              Local IP (eth0): 192.168.2.125/24
                    `"""              Locale: en_GB.UTF-8
+
+### AlmaLinux
+
+               'c:.                               user@rspb01
+              lkkkx, ..       ..   ,cc,           -----------
+              okkkk:ckkx'  .lxkkx.okkkkd          OS: AlmaLinux 9.4 aarch64
+              .:llcokkx'  :kkkxkko:xkkd,          Host: Raspberry Pi 5 Model B Rev 1.0
+            .xkkkkdood:  ;kx,  .lkxlll;           Kernel: Linux 6.6.31-20240529.v8.2.el9
+             xkkx.       xk'     xkkkkk:          Uptime: 33 mins
+             'xkx.       xd      .....,.          Shell: bash 5.1.8
+            .. :xkl'     :c      ..''..           Cursor: Adwaita
+          .dkx'  .:ldl:'. '  ':lollldkkxo;        Terminal: /dev/pts/0
+        .''lkkko'                     ckkkx.      CPU: Cortex-A76 (4) @ 2.40 GHz
+      'xkkkd:kkd.       ..  ;'        :kkxo.      Memory: 317.74 MiB / 7.76 GiB (4%)
+      ,xkkkd;kk'      ,d;    ld.   ':dkd::cc,     Swap: 0 B / 100.00 MiB (0%)
+       .,,.;xkko'.';lxo.      dx,  :kkk'xkkkkc    Disk (/): 5.18 GiB / 116.67 GiB (4%) - ext4
+           'dkkkkkxo:.        ;kx  .kkk:;xkkd.    Local IP (eth0): 192.168.2.125/24 *
+             .....   .;dk:.   lkk.  :;,           Locale: C.utf8
+                   :kkkkkkkdoxkkx    
+                    ,c,,;;;:xkkd.                
+                      ;kkkkl...             
+                      ;kkkkl    
+                       ,od;      
+
       
 ## RPi and GPIO
 
@@ -74,11 +100,32 @@ A ZSH library and scripts for controlling hardware PWM on a Raspberry Pi 5 B usi
 - **Demo Script**: Included is an example in zsh/pwm/run.zsh for controlling an RC servo and LEDs.
 
 ### Requirements
-- `zsh` v5.9
-- Add `dtoverlay=pwm-2chan` to `/boot/firmware/config.txt`. So we can use GPIO 12, 13, 18 and 19 for PWM function. See [Overlay](#datasheet)
+- `zsh` v5.8
+- Add `dtoverlay=pwm-2chan` to `/boot/firmware/config.txt` (Raspberry Pi OS) or `/boot/config.txt` (AlmaLinux), respectively. So we can use GPIO 12, 13, 18 and 19 for PWM function. See [Overlay](#datasheet)
 
 The library and script use some tools and builtin commands that come with Raspberry Pi OS and ZSH:
 - `printf`, `echo`, `zparseopts`, `trap`, `shift`, `sleep`, `pinctrl`, `source`, `bc`
+
+#### Set Up on Raspberry Pi OS
+
+    sudo dnf install zsh
+
+#### Set Up on AlmaLinux
+
+Compiler:
+
+    sudo yum groupinstall "Development Tools"
+    sudo yum install cmake
+
+Tools:
+
+    sudo dnf install bc
+    sudo dnf install zsh
+    git clone https://github.com/raspberrypi/utils.git
+    cd utils/pinctrl/
+    cmake .
+    make
+    sudo make install
 
 ### Example
 The example script for a RC servo and LEDs control is located at:
@@ -148,4 +195,8 @@ https://forums.raspberrypi.com/viewtopic.php?t=366795
 https://github.com/Pioreactor/rpi_hardware_pwm
 
 https://gist.github.com/Gadgetoid/b92ad3db06ff8c264eef2abf0e09d569
+
+### Sources
+
+https://github.com/raspberrypi/utils.git
 
