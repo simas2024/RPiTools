@@ -85,7 +85,7 @@ The library and script use some tools and builtin commands that come with Raspbe
 Commands and Tools:
 
     sudo apt update
-    sudo dnf install zsh
+    sudo apt install zsh
 
 #### AlmaLinux
 
