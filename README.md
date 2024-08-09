@@ -126,7 +126,7 @@ Demo: https://youtu.be/Z8dT_J9DFvU
 Clone repository:
 
 ```bash
-git clone git@git.simas.app:masc/RPiTools.git
+git clone https://github.com/simas2024/RPiTools.git
 ```
 
 Navigate to the directory where the repository was cloned:
