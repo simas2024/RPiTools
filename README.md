@@ -24,30 +24,30 @@ The scripts were tested and run on Raspberry Pi OS and AlmaLinux.
       
 ## RPi and GPIO
 
-                                                  +-----+--------||--------+-----+
-                                                  |     |  Name  ||  Name  |     |
-      ~ ---------------------------------         +-----+--------||--------+-----+
-      ~                          1  o  o  2  ---- |     |   3.3v ||     5v |     |
-      ~                          3  o  o  4       |   2 |  SDA.1 ||     5V |     |
-      ~                          5  o  o  6       |   3 |  SCL.1 ||     0v |     |
-      ~                          7  o  o  8       |   4 |   GPIO ||  TxD.1 |  14 |
-      ~                          9  o  o  10      |     |     0v ||  RxD.1 |  15 |
-      ~                         11  o  o  12      |  17 |   GPIO ||   GPIO |  18 |
-      ~                         13  o  o  14      |  27 |   GPIO ||     0v |     |
-      ~                         15  o  o  16      |  22 |   GPIO ||   GPIO |  23 |
-      ~       -------------     17  o  o  18      |     |   3.3v ||   GPIO |  24 |
-      ~      |             |    19  o  o  20      |  10 |   MOSI ||     0v |     |
-      ~      |   BCM2712   |    21  o  o  22      |   9 |   MISO ||   GPIO |  25 |
-      ~      |             |    23  o  o  24      |  11 |   SCLK ||    CE0 |   8 |
-      ~       -------------     25  o  o  26      |     |     0v ||    CE1 |   7 |
-      ~                         27  o  o  28      |   0 |  SDA.0 ||  SCL.0 |   1 |
-      ~                         29  o  o  30      |   5 |   GPIO ||     0v |     |
-      ~                         31  o  o  32      |   6 |   GPIO ||   GPIO |  12 |
-      ~                         33  o  o  34      |  13 |   GPIO ||     0v |     |
-      ~                         35  o  o  36      |  19 |   GPIO ||   GPIO |  16 |
-      ~                         37  o  o  38      |  26 |   GPIO ||   GPIO |  20 |
-      ~                         39  o  o  40 ---- |     |     0v ||   GPIO |  21 |
-      ~                 ---------       |         +-----+--------+|-------+-----+
+                                                  +----+-------||-------+----+
+                                                  |    | Name  || Name  |    |
+      ~ ---------------------------------         +----+-------||-------+----+
+      ~                          1  o  o  2  ---- |    |  3.3v ||    5v |    |
+      ~                          3  o  o  4       |  2 | SDA.1 ||    5V |    |
+      ~                          5  o  o  6       |  3 | SCL.1 ||    0v |    |
+      ~                          7  o  o  8       |  4 |  GPIO || TxD.1 | 14 |
+      ~                          9  o  o  10      |    |    0v || RxD.1 | 15 |
+      ~                         11  o  o  12      | 17 |  GPIO ||  GPIO | 18 |
+      ~                         13  o  o  14      | 27 |  GPIO ||    0v |    |
+      ~                         15  o  o  16      | 22 |  GPIO ||  GPIO | 23 |
+      ~       -------------     17  o  o  18      |    |  3.3v ||  GPIO | 24 |
+      ~      |             |    19  o  o  20      | 10 |  MOSI ||    0v |    |
+      ~      |   BCM2712   |    21  o  o  22      |  9 |  MISO ||  GPIO | 25 |
+      ~      |             |    23  o  o  24      | 11 |  SCLK ||   CE0 |  8 |
+      ~       -------------     25  o  o  26      |    |    0v ||   CE1 |  7 |
+      ~                         27  o  o  28      |  0 | SDA.0 || SCL.0 |  1 |
+      ~                         29  o  o  30      |  5 |  GPIO ||    0v |    |
+      ~                         31  o  o  32      |  6 |  GPIO ||  GPIO | 12 |
+      ~                         33  o  o  34      | 13 |  GPIO ||    0v |    |
+      ~                         35  o  o  36      | 19 |  GPIO ||  GPIO | 16 |
+      ~                         37  o  o  38      | 26 |  GPIO ||  GPIO | 20 |
+      ~                         39  o  o  40 ---- |    |    0v ||  GPIO | 21 |
+      ~                 ---------       |         +----+-------||-------+----+
       ~                |         |      |
       ~                |   RP1   |      |
       ~                |         |      |
@@ -67,11 +67,11 @@ A ZSH library and scripts for controlling hardware PWM on a Raspberry Pi 5 B usi
 
 ### Features
 - **ZSH Script for Hardware PWM**: Control PWM on Raspberry Pi 5 pins 12, 13, 18 and 19.
-- **Demo Script**: Included is an example in zsh/pwm/run.zsh for controlling an RC servo and LEDs.
+- **Demo Script**: Included is an example in `./zsh/pwm/run.zsh` for controlling an RC servo and LEDs.
 
 ### Requirements
 - `zsh` v5.8
-- Add `dtoverlay=pwm-2chan` to `/boot/firmware/config.txt` (Raspberry Pi OS) or `/boot/config.txt` (AlmaLinux), respectively. So we can use GPIO 12, 13, 18 and 19 for PWM function. See [Overlay](#overlays)
+- Add `dtoverlay=pwm-2chan` to `/boot/firmware/config.txt` (Raspberry Pi OS) or `/boot/config.txt` (AlmaLinux), respectively. So we can use GPIO 12, 13, 18 and 19 for PWM function. See [Git Repositories - Overlays](#git-repositories)
 
 The library and script use some tools and builtin commands that come with Raspberry Pi OS and ZSH:
 - `printf`, `echo`, `zparseopts`, `trap`, `shift`, `sleep`, `pinctrl`, `source`, `bc` *)
@@ -124,6 +124,7 @@ Demo: https://youtu.be/Z8dT_J9DFvU
 #### Running the Script
 
 Clone repository:
+
 ```bash
 git clone git@git.simas.app:masc/RPiTools.git
 ```
@@ -156,28 +157,23 @@ pinctrl get 12,13,18,19
   18: a3    pd | lo // GPIO18 = PWM0_CHAN2
   19: a3    pd | lo // GPIO19 = PWM0_CHAN3
 ```
-
 ## References
 
-### Overlays
-
-https://github.com/raspberrypi/rpi-firmware/tree/master/overlays#readme
-
-### Datasheet
+### Datasheets
 
 https://datasheets.raspberrypi.com/rp1/rp1-peripherals.pdf
 
-### Forum
+### Forums and SO
 
 https://forums.raspberrypi.com/viewtopic.php?t=366795
 
-### Examples
+### Git Repositories
+
+https://github.com/raspberrypi/rpi-firmware/tree/master/overlays#readme
+
+https://github.com/raspberrypi/utils.git
 
 https://github.com/Pioreactor/rpi_hardware_pwm
 
 https://gist.github.com/Gadgetoid/b92ad3db06ff8c264eef2abf0e09d569
-
-### Sources
-
-https://github.com/raspberrypi/utils.git
 
