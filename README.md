@@ -12,7 +12,7 @@ The scripts were tested and run on Raspberry Pi OS and AlmaLinux.
 
     OS: Debian GNU/Linux bookworm 12.6 aarch64
     Host: Raspberry Pi 5 Model B Rev 1.0
-    Kernel: Linux 6.6.40-v8-16k+
+    Kernel: Linux 6.6.31-v8-16k+
     Shell: bash 5.2.15
 
 ### AlmaLinux
