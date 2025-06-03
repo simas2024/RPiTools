@@ -1,23 +1,109 @@
-Done with ChatGPT 4o
+# Raspberry Pi 5 Inno Cam (IMX708) Stream and Capture
 
-⸻
+This repository contains a script for live streaming and capturing images using the Innomaker IMX708 camera module on a Raspberry Pi 5. The script streams video over UDP to a client and allows capturing still images on the Pi.
 
-📸 🎥 Anwendung
+## Platform
 
-Skript unter SSH und mit ZSH auf dem RPi starten
+The script was tested on the following platforms:
 
-Live-Stream mit rpicam-vid (UDP) starten
+### Raspberry Pi OS (Server)
 
-Vorschau auf den Client streamen und dort mit ffplay oder VLC ansehen
+- OS: Debian GNU/Linux bookworm 12.11 aarch64
+- Host: Raspberry Pi 5 Model B Rev 1.0
+- Kernel: Linux 6.12.25+rpt-rpi-2712
+- Shell: zsh 5.9
 
-Beim Drücken von c ein Foto mit rpicam-still macht und lokal auf dem Pi speichern
+### macOS (Client)
 
-Beispiel:
+- OS: macOS Sequoia 15.5 arm64
+- Host: Mac mini (M1, 2020)
+- Kernel: Darwin 24.5.0
+- Shell: zsh 5.9
+
+### Camera
+
+- Innomaker Sensor: imx708 [4608x2592 10-bit RGGB]
+
+## Features
+
+- Start the script via SSH and zsh on the Raspberry Pi.
+- Start a live video stream with `rpicam-vid` (UDP).
+- Preview the stream on the client using `ffplay` or VLC.
+- Press `c` in the script to capture a still image with `rpicam-still`, saved locally on the Pi.
+
+## Requirements
+
+- zsh
+- ffplay
+- rpicam-apps
+
+## Installation
+
+### Raspberry Pi OS
+
+1. Update the system:
+    ```bash
+    sudo apt update && sudo apt upgrade
+    ```
+
+2. Install camera tools:
+    ```bash
+    sudo apt install rpicam-apps
+    ```
+
+3. Test the camera:
+    ```bash
+    rpicam-hello --list-cameras
+    ```
+
+### macOS
+
+1. Install Homebrew if needed:
+    ```zsh
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    ```
+
+2. Install ffmpeg (provides ffplay):
+    ```zsh
+    brew install ffmpeg
+    ```
+
+---
+
+## Running the Script
+
+On the client:
+```zsh
+ffplay udp://@:5000
+```
+
+On the Raspberry Pi (via SSH):
+
+```zsh
+git clone https://github.com/simas2024/RPiTools.git
+```
+
+Navigate to the directory where the repository was cloned:
+```zsh
+cd RPiTools
+```
+
+```zsh
+./zsh/innocam/capture01.zsh
+```
+
+Press `c` to capture a still image (saved on the Pi).
+
+Press `s` to stop the stream and exit the script.
+
+Note: Adjust the IP address (192.168.2.101) in the script to match your client IP.
+
+## Example
 
 <table>
   <tr>
-    <th>Aufbau</th>
-    <th>Aufnahme <code>--saturation 0.0</code></th>
+    <th>Scene</th>
+    <th>Capture <code>--saturation 0.0</code></th>
   </tr>
   <tr>
     <td><img src="img/aufbau.jpg" height="200"></td>
@@ -25,86 +111,10 @@ Beispiel:
   </tr>
 </table>
 
-⸻
+## References
+ 
+- [Raspberry Pi Camera Software Documentation](https://www.raspberrypi.com/documentation/computers/camera_software.html)
 
-💻 Plattform
+- [Innomaker Camera](https://github.com/INNO-MAKER/cam-imx708af)
+ 
 
-Server: RPi5 Raspberry Pi: Debian GNU/Linux bookworm 12.11 aarch64 OS 6.12.25+rpt-rpi-2712
-Client: macoOS 15.5, ssh, zsh 
-
-⸻
-
-Skript: [capture01.zsh](scripts/capture01.zsh)
-
-
-```zsh
-#!/bin/zsh
-
-function stop_preview() {
-    echo "Vorschau stoppen..."
-    kill $PREVIEW_PID 2>/dev/null
-    wait $PREVIEW_PID 2>/dev/null
-    sleep 0.5  # kleine Pause zur Sicherheit
-}
-
-function start_preview() {
-    rpicam-vid --width 1920 --height 1080 --framerate 30 \
-        --low-latency on --denoise cdn_off --awb daylight \
-        --saturation 0.0 --hdr single-exp --timeout 0 --vflip \
-        -o udp://192.168.2.101:5000 > /dev/null 2>&1 &
-    PREVIEW_PID=$!
-}
-
-start_preview
-echo "Stream läuft... (Taste 'c' = Foto machen, 's' = stoppen und beenden)"
-
-mkdir -p captures
-
-while true; do
-    read -sk 1 key
-    case $key in
-        c)
-            stop_preview
-            echo "Foto wird aufgenommen..."
-            rpicam-still --raw --output "captures/bild_$(date +%Y%m%d_%H%M%S).jpg" \
-                --gain 1.0 --denoise cdn_off --ev 1.0 --awb daylight \
-                --hdr single-exp --vflip --timeout 1 -n
-            echo "Foto gespeichert."
-            echo "Vorschau wird neu gestartet..."
-            start_preview
-            ;;
-        s)
-            stop_preview
-            echo "Beende Skript."
-            break
-            ;;
-    esac
-done
-```
-
-⸻
-
-🔧 Anleitung
-
-1️⃣ Starte auf dem Server:
-
-```zsh
-ffplay udp://@:5000
-```
-
-2️⃣ Starte auf dem RPi (per SSH):
-
-```zsh
-./capture01.zsh
-```
-
-3️⃣ Drücke:
-	•	c ➔ Foto wird aufgenommen (auf dem Pi gespeichert).
-	•	s ➔ Stream wird gestoppt und Skript beendet.
-
-⸻
-
-🚦 Hinweis
-	•	IP-Adresse anpassen: 192.168.2.101 im Skript muss die IP des Client sein.
-
-⸻
