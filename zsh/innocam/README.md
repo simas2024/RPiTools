@@ -89,7 +89,7 @@ cd RPiTools
 ```
 
 ```zsh
-./zsh/innocam/capture01.zsh
+./zsh/innocam/scripts/capture01.zsh
 ```
 
 Press `c` to capture a still image (saved on the Pi).
