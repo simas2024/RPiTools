@@ -12,6 +12,19 @@ Vorschau auf den Client streamen und dort mit ffplay oder VLC ansehen
 
 Beim Drücken von c ein Foto mit rpicam-still macht und lokal auf dem Pi speichern
 
+Beispiel:
+
+<table>
+  <tr>
+    <th>Aufbau</th>
+    <th>Aufnahme <code>--saturation 0.0</code></th>
+  </tr>
+  <tr>
+    <td><img src="img/aufbau.jpg" height="200"></td>
+    <td><img src="img/bild_20250603_094229.jpg" height="200"></td>
+  </tr>
+</table>
+
 ⸻
 
 💻 Plattform
@@ -22,7 +35,6 @@ Client: macoOS 15.5, ssh, zsh
 ⸻
 
 Skript: [capture01.zsh](scripts/capture01.zsh)
-
 
 
 ```zsh
