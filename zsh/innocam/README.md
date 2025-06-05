@@ -2,6 +2,18 @@
 
 This repository contains a script for live streaming and capturing images using the Innomaker IMX708 camera module on a Raspberry Pi 5. The script streams video over UDP to a client and allows capturing still images on the Pi.
 
+<table align="center">
+  <tr>
+    <th>Inno Cam and Raspberry Pi 5 assembled and mounted on a tripod 😊</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="img/cam.jpg" height="400">
+    </td>
+  </tr>
+</table>
+
+
 ## Platform
 
 Streaming was tested with minimum delay over a 1 Gbit/s LAN on the following platforms:
