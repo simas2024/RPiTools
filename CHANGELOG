@@ -3,41 +3,47 @@
 ## 0.1.0 - 2024-07-30
 
 ### Added
-	•	Initial version
-	•	ZSH script for hardware PWM control via sysfs interface on Raspberry Pi 5
-	•	Set and output HW PWM on pins 12, 13, 18
-	•	Example for servo control in run.zsh
+	- Initial version
+	- ZSH script for hardware PWM control via sysfs interface on Raspberry Pi 5
+	- Set and output HW PWM on pins 12, 13, 18
+	- Example for servo control in run.zsh
 
 ## 0.2.0 - 2024-08-01
 
 ### Changed
-	•	Script Update: Revised the script to enable the use of all four PWM channels.
-	•	Demo Update: The demo has been updated to showcase the control of an RC servo and LED using the improved script capabilities.
+	- Script Update: Revised the script to enable the use of all four PWM channels.
+	- Demo Update: The demo has been updated to showcase the control of an RC servo and LED using the improved script capabilities.
 
 ## 0.3.0 - 2024-08-04
 
 ### Added
-	•	README and Script Update: Support for AlmaLinux
+	- README and Script Update: Support for AlmaLinux
 
 ## 0.3.1 - 2024-08-05
 
 ### Changed
-	•	README Update
+	- README Update
 
 ## 0.3.2 - 2024-08-05
 
 ### Changed
-	•	README Update
+	- README Update
 
 ## 0.4.0 - 2025-06-03
 
 ### Added
-	•	RPi Cam Module v3 Stream and Capture Script
+	- RPi Cam Module v3 Stream and Capture Script
 
 ### Changed
-	•	Repo restructured
+	- Repo restructured
 
 ## 0.4.1 - 2025-06-03
 
 ### Changed
-	•	README Update
+	- README Update
+
+## 0.4.2 - 2025-06-05
+
+### Changed
+	- Inno Cam Streaming: Some adaptations on server and client side to reduce delay.
+	- Inno Cam README Update

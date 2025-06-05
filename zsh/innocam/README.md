@@ -4,25 +4,30 @@ This repository contains a script for live streaming and capturing images using 
 
 ## Platform
 
-The script was tested on the following platforms:
+Streaming was tested with minimum delay over a 1 Gbit/s LAN on the following platforms:
 
 ### Raspberry Pi OS (Server)
 
 - OS: Debian GNU/Linux bookworm 12.11 aarch64
-- Host: Raspberry Pi 5 Model B Rev 1.0
+- Host: Raspberry Pi 5 8GB
 - Kernel: Linux 6.12.25+rpt-rpi-2712
 - Shell: zsh 5.9
 
 ### macOS (Client)
 
 - OS: macOS Sequoia 15.5 arm64
-- Host: Mac mini (M1, 2020)
 - Kernel: Darwin 24.5.0
 - Shell: zsh 5.9
 
+### Windows 11 (Client)
+
+- OS: Windows 11 Pro x86_64
+- Kernel: WIN32_NT 10.0.26100.4202 (24H2)
+- Shell: Windows PowerShell 5.1.26100.4202
+
 ### Camera
 
-- Innomaker Sensor: imx708 [4608x2592 10-bit RGGB]
+- Innomaker Sensor: IMX708 AF [4608x2592 10-bit RGGB]
 
 ## Features
 
@@ -59,37 +64,61 @@ The script was tested on the following platforms:
 ### macOS
 
 1. Install Homebrew if needed:
-    ```zsh
+    ```bash
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
 
 2. Install ffmpeg (provides ffplay):
-    ```zsh
+    ```bash
     brew install ffmpeg
     ```
 
----
+### Windows 11
 
-## Running the Script
+1. Install FFmpeg (includes ffplay) via winget:
+    ```powershell
+    winget install --id=Gyan.FFmpeg --source=winget
+    ```
+
+2. (This might already be done when ffplay starts for the first time) Allow UDP port 5000 in Windows Firewall:
+    - Search "Windows Defender Firewall".
+    - Open "Advanced Settings" → "Inbound Rules" → "New Rule".
+    - Select "Port", choose "UDP", set "5000", and allow the connection.
+
+## Streaming
 
 On the client:
-```zsh
-ffplay udp://@:5000
+
+macOS
+
+```bash
+ffplay -fflags nobuffer -flags low_delay udp://@:5000
+```
+
+Windows 11
+
+```Powershell
+ffplay -fflags nobuffer -flags low_delay udp://0.0.0.0:5000
 ```
 
 On the Raspberry Pi (via SSH):
 
-```zsh
+```bash
 git clone https://github.com/simas2024/RPiTools.git
 ```
 
-Navigate to the directory where the repository was cloned:
-```zsh
+Navigate to the directory where the repository was cloned and add a link:
+
+```bash
 cd RPiTools
+ln -s zsh/innocam/scripts/capture01.zsh capture
+chmod +x capture
 ```
 
-```zsh
-./zsh/innocam/scripts/capture01.zsh
+Start streaming:
+
+```bash
+./capture
 ```
 
 Press `c` to capture a still image (saved on the Pi).

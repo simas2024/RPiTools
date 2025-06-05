@@ -14,15 +14,11 @@ function stop_preview() {
     echo "Vorschau stoppen..."
     kill $PREVIEW_PID 2>/dev/null
     wait $PREVIEW_PID 2>/dev/null
-    sleep 0.5  # kleine Pause zur Sicherheit
+    sleep 0.5
 }
 
 function start_preview() {
-    rpicam-vid --width 1920 --height 1080 --framerate 30 \
-        --low-latency on --denoise cdn_off --awb daylight \
-        --saturation 0.0 --hdr single-exp --timeout 0 --vflip \
-        -o udp://192.168.2.101:5000 > /dev/null 2>&1 &
-    PREVIEW_PID=$!
+    rpicam-vid --width 1920 --height 1080 --framerate 30 --low-latency on --inline --flush --denoise cdn_off --awb daylight --saturation 0.0 --timeout 0 --vflip -n -o udp://192.168.2.120:5000 > /dev/null 2>&1 & PREVIEW_PID=$!
 }
 
 start_preview
@@ -36,7 +32,7 @@ while true; do
             echo "Foto wird aufgenommen..."
             TIMESTAMP=$(date +%Y%m%d_%H%M%S)
             rpicam-still --raw  --output "$CAPTURE_DIR/bild_${TIMESTAMP}.jpg" --hdr single-exp --vflip --timeout 1000 -n
-            echo "Foto gespeichert: $CAPTURE_DIR/bild_${TIMESTAMP}.jpg" 
+            echo "Foto gespeichert: $CAPTURE_DIR/bild_${TIMESTAMP}.jpg"
             rpicam-still --output "$CAPTURE_DIR/bild_bw_${TIMESTAMP}.jpg" --saturation 0.0 --hdr single-exp --vflip --timeout 1000 -n
             echo "Foto gespeichert: $CAPTURE_DIR/bild_bw_${TIMESTAMP}.jpg"
             echo "Vorschau wird neu gestartet..."
