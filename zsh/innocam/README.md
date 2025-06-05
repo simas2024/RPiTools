@@ -129,14 +129,16 @@ Note: Adjust the IP address (192.168.2.101) in the script to match your client I
 
 ## Example
 
+Object held freehand in front of the camera, captured via `c` during streaming:
+
 <table>
   <tr>
-    <th>Scene</th>
-    <th>Capture <code>--saturation 0.0</code></th>
+    <th> <code>--saturation 0.0</code></th>
+    <th> <code>--saturation 1.0</code></th>
   </tr>
   <tr>
-    <td><img src="img/aufbau.jpg" height="200"></td>
-    <td><img src="img/bild_20250603_094229.jpg" height="200"></td>
+    <td><img src="img/bild_bw_20250605_080155.jpg" height="300"></td>
+    <td><img src="img/bild_20250605_080155.jpg" height="300"></td>
   </tr>
 </table>
 
