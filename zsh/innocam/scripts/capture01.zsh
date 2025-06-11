@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 # --------------------------------------------------------------
 # This script was developed with the assistance of ChatGPT-4o 
