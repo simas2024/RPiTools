@@ -67,9 +67,11 @@ Streaming was tested on the following platforms:
     sudo apt update && sudo apt upgrade
     ```
 
-2. Install camera tools:
+2. Install camera tools and GStreamer packages:
     ```bash
-    sudo apt install rpicam-apps
+    sudo apt install rpicam-apps gstreamer1.0-libcamera gstreamer1.0-tools \
+        gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+        gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav
     ```
 
 3. Test the camera:
