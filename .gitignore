@@ -1,2 +1,3 @@
 # macOs
-.DS_Store
+**/*DS_Store
+zsh/innocam/scripts/captures
