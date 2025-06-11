@@ -51,8 +51,6 @@ Streaming was tested on the following platforms:
 * Preview the video stream on the client using `ffplay` or GStreamer.
 * Press `c` in the script to capture a still image with `rpicam-still`, saved locally on the Pi.
 
-Got it! Let’s update the README to clarify which tool (ffplay or GStreamer) should be used on the client side, depending on which streaming method you chose (rpicam-vid or GStreamer). Here’s the revised **README**:
-
 ## Requirements
 
 * `zsh`
