@@ -135,12 +135,16 @@ Depending on the streaming mode you selected in the script:
   On Windows (PowerShell), use:
 
   ```powershell
-  & "C:\Program Files\gstreamer\1.0\msvc_x86_64\bin\gst-launch-1.0.exe"
-      udpsrc port=5000 caps="application/x-rtp, media=video, encoding-name=H264, payload=96" !
-      rtph264depay ! h264parse ! avdec_h264 ! videoconvert !
-      videoflip method=vertical-flip ! videobalance saturation=0.0 ! autovideosink sync=false
+  & "C:\Program Files\gstreamer\1.0\msvc_x86_64\bin\gst-launch-1.0.exe" `
+    udpsrc port=5000 caps="application/x-rtp, media=video, encoding-name=H264, payload=96" `
+    ! rtph264depay ! h264parse ! avdec_h264 ! videoconvert `
+    ! videoflip method=vertical-flip ! videobalance saturation=0.0 `
+    ! autovideosink sync=false
   ```
-  
+
+  On first launch, Windows 11 may prompt you to allow network access for the application. You may need administrator privileges to allow incoming connections on the specified port.
+
+
 On the Server (Raspberry Pi):
 
 ```bash
@@ -166,13 +170,13 @@ chmod +x zsh/innocam/scripts/capture01.zsh
 Show the help to choose the right options and values:
 
 ```bash
-./capture --help
+capture --help
 ```
 
 or
 
 ```bash
-./zsh/innocam/scripts/capture01.zsh
+./zsh/innocam/scripts/capture01.zsh --help
 ```
 
 Press `c` to capture a still image (saved on the Pi).
@@ -197,7 +201,8 @@ Object held freehand in front of the camera, captured via `c` during streaming:
 ## References
  
 - [Raspberry Pi Camera Software Documentation](https://www.raspberrypi.com/documentation/computers/camera_software.html)
-
+- [GStreamer Official Documentation](https://gstreamer.freedesktop.org/documentation/)
+- [FFmpeg Tools Documentation (ffplay)](https://ffmpeg.org/ffplay.html)
 - [Innomaker Camera](https://github.com/INNO-MAKER/cam-imx708af)
  
 
