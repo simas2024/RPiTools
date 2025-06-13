@@ -159,26 +159,27 @@ On the Server (Raspberry Pi):
 git clone https://github.com/simas2024/RPiTools.git
 ```
 
+```bash
+cd RPiTools
+chmod +x zsh/innocam/scripts/capture01.zsh
+```
+
 Navigate to the directory where the repository was cloned, and optionally create a global symlink:
 
 ```bash
-cd RPiTools
 sudo ln -s "$PWD/zsh/innocam/scripts/capture01.zsh" /usr/local/bin/capture
-sudo chmod +x /usr/local/bin/capture
 ```
 
 Alternatively, run it directly from the repository directory:
 
 ```bash
-cd RPiTools
-chmod +x zsh/innocam/scripts/capture01.zsh
 ./zsh/innocam/scripts/capture01.zsh
 ```
 
 To use a self-compiled GStreamer version:
 
 ```bash
-./zsh/innocam/scripts/capture01.zsh --gst --gstver /opt/gstreamer/1.24.3/bin/gst-launch-1.0
+./zsh/innocam/scripts/capture01.zsh --gst --gstver /opt/gstreamer/1.26.2/bin/gst-launch-1.0 --clientip 192.168.0.100 --clientport 6000
 ```
 
 Show the help to choose the right options and values:
