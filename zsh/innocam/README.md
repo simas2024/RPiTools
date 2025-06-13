@@ -47,9 +47,14 @@ Streaming was tested on the following platforms:
 
   * Default: `rpicam-vid` (UDP).
   * Optional: `gst-launch-1.0` (GStreamer) via the `--gst` option.
-* Configurable resolution (`--width`, `--height`) and framerate (`--framerate`).
+  * Use a specific GStreamer binary with the `--gstver` option.
+  * Configurable resolution (`--width`, `--height`) and framerate (`--framerate`).
 * Preview the video stream on the client using `ffplay` or GStreamer.
 * Press `c` in the script to capture a still image with `rpicam-still`, saved locally on the Pi.
+
+When streaming with GStreamer, the `--gstver` option lets you select which
+`gst-launch-1.0` binary to run. This is useful if you compiled multiple
+versions as described in [README_CompileRPiGS.md](README_CompileRPiGS.md).
 
 ## Requirements
 
@@ -73,6 +78,9 @@ Streaming was tested on the following platforms:
         gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
         gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav
     ```
+
+   Alternatively you can compile GStreamer yourself from the git repository.
+   See [README_CompileRPiGS.md](README_CompileRPiGS.md) for detailed instructions.
 
 3. Test the camera:
     ```bash
@@ -165,6 +173,12 @@ Alternatively, run it directly from the repository directory:
 cd RPiTools
 chmod +x zsh/innocam/scripts/capture01.zsh
 ./zsh/innocam/scripts/capture01.zsh
+```
+
+To use a self-compiled GStreamer version:
+
+```bash
+./zsh/innocam/scripts/capture01.zsh --gst --gstver /opt/gstreamer/1.24.3/bin/gst-launch-1.0
 ```
 
 Show the help to choose the right options and values:
