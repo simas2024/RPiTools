@@ -40,12 +40,13 @@ Options:
   --framerate <value>   Set video framerate (default: 30, only for rpicam-vid)
   --clientip <value>    Set client IP address (default: 127.0.0.1)
   --clientport <value>  Set client port (default: 5000)
-  --gstver <path>      Path to gst-launch executable (default: /usr/bin/gst-launch-1.0)
+  --gstver <path>       Path to gst-launch executable (default: /usr/bin/gst-launch-1.0)
   -h, --help            Show this help message and exit
 
 Note:
   - The options --width, --height, and --framerate are only effective with the rpicam-vid streamer.
   - When using GStreamer (--gst), these options are ignored.
+  - If GStreamer (--gst) is used, --gstver can be specified; otherwise, it is ignored.
 
 Example:
   $0 --rpicam --width 1280 --height 720 --framerate 25
