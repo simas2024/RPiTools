@@ -213,10 +213,16 @@ Object held freehand in front of the camera, captured via `c` during streaming:
 </table>
 
 ## References
+
+### Documentation
  
 - [Raspberry Pi Camera Software Documentation](https://www.raspberrypi.com/documentation/computers/camera_software.html)
 - [GStreamer Official Documentation](https://gstreamer.freedesktop.org/documentation/)
 - [FFmpeg Tools Documentation (ffplay)](https://ffmpeg.org/ffplay.html)
 - [Innomaker Camera](https://github.com/INNO-MAKER/cam-imx708af)
+
+### Source
+
+- [GStreamer Source](https://gitlab.freedesktop.org/gstreamer/gstreamer.git)
  
 
