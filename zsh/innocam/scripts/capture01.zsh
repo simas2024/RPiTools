@@ -51,7 +51,7 @@ Note:
 Example:
   $0 --rpicam --width 1280 --height 720 --framerate 25
   $0 --gst --clientip 192.168.0.100 --clientport 6000
-  $0 --gst --gstver /opt/gstreamer/1.24/bin/gst-launch-1.0
+  $0 --gst --gstver /opt/gstreamer/1.26.2/bin/gst-launch-1.0 --clientip 192.168.2.120 --clientport 5000
 "
     exit 0
 fi
@@ -81,6 +81,12 @@ function stop_preview() {
 }
 
 function start_preview() {
+    if [[ -z $($GST_CMD --version 2>/dev/null | head -n 1) ]]; then
+        stop_preview
+        echo "$GST_CMD not found. Exiting script."
+        exit 1
+    fi
+
     echo "Starting preview ($STREAMER) at ${WIDTH}x${HEIGHT} @ ${FRAMERATE}fps..."
     [[ "$STREAMER" == "gst" ]] && echo "Using $GST_CMD ($($GST_CMD --version | head -n 1))"
 
