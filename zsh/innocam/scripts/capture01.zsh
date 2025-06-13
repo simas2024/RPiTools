@@ -21,11 +21,12 @@ FRAMERATE=30
 STREAMER="rpicam-vid"
 CLIENTIP="127.0.0.1"
 CLIENTPORT="5000"
+GST_CMD="/usr/bin/gst-launch-1.0"
 
 # Optionen parsen mit zparseopts
 zparseopts -E -D -F - -help=opt_help h=opt_help -gst=opt_gst -rpicam=opt_rpicam \
     -width:=opt_width -height:=opt_height -framerate:=opt_framerate \
-    -clientip:=opt_clientip -clientport:=opt_clientport
+    -clientip:=opt_clientip -clientport:=opt_clientport -gstver:=opt_gstver
 
 if [[ -n "$opt_help" ]]; then
     echo "
@@ -39,6 +40,7 @@ Options:
   --framerate <value>   Set video framerate (default: 30, only for rpicam-vid)
   --clientip <value>    Set client IP address (default: 127.0.0.1)
   --clientport <value>  Set client port (default: 5000)
+  --gstver <path>      Path to gst-launch executable (default: /usr/bin/gst-launch-1.0)
   -h, --help            Show this help message and exit
 
 Note:
@@ -48,6 +50,7 @@ Note:
 Example:
   $0 --rpicam --width 1280 --height 720 --framerate 25
   $0 --gst --clientip 192.168.0.100 --clientport 6000
+  $0 --gst --gstver /opt/gstreamer/1.24/bin/gst-launch-1.0
 "
     exit 0
 fi
@@ -66,6 +69,7 @@ fi
 
 [[ -n "$opt_clientip" ]] && CLIENTIP="${opt_clientip[2]}"
 [[ -n "$opt_clientport" ]] && CLIENTPORT="${opt_clientport[2]}"
+[[ -n "$opt_gstver" ]] && GST_CMD="${opt_gstver[2]}"
 
 
 function stop_preview() {
@@ -77,6 +81,7 @@ function stop_preview() {
 
 function start_preview() {
     echo "Starting preview ($STREAMER) at ${WIDTH}x${HEIGHT} @ ${FRAMERATE}fps..."
+    [[ "$STREAMER" == "gst" ]] && echo "Using $GST_CMD ($($GST_CMD --version | head -n 1))"
 
     if [[ "$STREAMER" == "rpicam-vid" ]]; then
         rpicam-vid --width $WIDTH --height $HEIGHT --framerate $FRAMERATE \
@@ -85,7 +90,7 @@ function start_preview() {
         -o udp://${CLIENTIP}:${CLIENTPORT} > /dev/null 2>&1 &
         PREVIEW_PID=$!
     elif [[ "$STREAMER" == "gst" ]]; then
-        gst-launch-1.0 libcamerasrc af-mode=continuous ! \
+        "$GST_CMD" libcamerasrc af-mode=continuous ! \
             video/x-raw,width=$WIDTH,height=$HEIGHT,framerate=${FRAMERATE}/1 ! \
             queue max-size-buffers=0 max-size-time=0 max-size-bytes=0 leaky=downstream ! \
             x264enc tune=zerolatency speed-preset=ultrafast key-int-max=30 insert-vui=1 ! \
